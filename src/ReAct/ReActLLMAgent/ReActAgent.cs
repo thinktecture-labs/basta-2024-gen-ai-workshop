@@ -18,7 +18,7 @@ public class ReActAgent
     private readonly List<ITool> _tools;
 
     private readonly string PromptTemplate =
-        @"Today is {today} and you can use tools to get new information. Answer the question as best as you can using the following tools: 
+        @"Today is {today} and you can use tools to get new information. Answer the question as best as you can ALWAYS using the following tools: 
 
         {tool_description}
 
