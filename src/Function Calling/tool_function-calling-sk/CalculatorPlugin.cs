@@ -10,6 +10,7 @@ public class CalculatorPlugin
         [Description("The number to take a square root of")] double number1
     )
     {
+        Console.WriteLine($"Sqrt function called with parameter: number1 = {number1}");
         return Math.Sqrt(number1);
     }
 
@@ -19,6 +20,7 @@ public class CalculatorPlugin
         [Description("The second number to add")] double number2
     )
     {
+        Console.WriteLine($"Add function called with parameters: number1 = {number1}, number2 = {number2}");
         return number1 + number2;
     }
 
@@ -28,6 +30,7 @@ public class CalculatorPlugin
         [Description("The second number to subtract away")] double number2
     )
     {
+        Console.WriteLine($"Subtract function called with parameters: number1 = {number1}, number2 = {number2}");
         return number1 - number2;
     }
 
@@ -37,6 +40,7 @@ public class CalculatorPlugin
         [Description("The second number to multiply")] double number2
     )
     {
+        Console.WriteLine($"Multiply function called with parameters: number1 = {number1}, number2 = {number2}");
         return number1 * number2;
     }
 
@@ -46,6 +50,7 @@ public class CalculatorPlugin
         [Description("The second number to divide by")] double number2
     )
     {
+        Console.WriteLine($"Divide function called with parameters: number1 = {number1}, number2 = {number2}");
         return number1 / number2;
     }
 
@@ -55,6 +60,7 @@ public class CalculatorPlugin
         [Description("The power to raise the number to")] double number2
     )
     {
+        Console.WriteLine($"Power function called with parameters: number1 = {number1}, number2 = {number2}");
         return Math.Pow(number1, number2);
     }
 
@@ -64,6 +70,7 @@ public class CalculatorPlugin
         [Description("The base of the log")] double number2
     )
     {
+        Console.WriteLine($"Log function called with parameters: number1 = {number1}, number2 = {number2}");
         return Math.Log(number1, number2);
     }
 
@@ -73,6 +80,7 @@ public class CalculatorPlugin
         [Description("The number of decimal places to round to")] double number2
     )
     {
+        Console.WriteLine($"Round function called with parameters: number1 = {number1}, number2 = {number2}");
         return Math.Round(number1, (int)number2);
     }
 
@@ -81,6 +89,7 @@ public class CalculatorPlugin
         [Description("The number to take the absolute value of")] double number1
     )
     {
+        Console.WriteLine($"Abs function called with parameter: number1 = {number1}");
         return Math.Abs(number1);
     }
 
@@ -89,6 +98,7 @@ public class CalculatorPlugin
         [Description("The number to take the floor of")] double number1
     )
     {
+        Console.WriteLine($"Floor function called with parameter: number1 = {number1}");
         return Math.Floor(number1);
     }
 
@@ -97,6 +107,7 @@ public class CalculatorPlugin
         [Description("The number to take the ceiling of")] double number1
     )
     {
+        Console.WriteLine($"Ceiling function called with parameter: number1 = {number1}");
         return Math.Ceiling(number1);
     }
 
@@ -105,6 +116,7 @@ public class CalculatorPlugin
         [Description("The number to take the sine of")] double number1
     )
     {
+        Console.WriteLine($"Sin function called with parameter: number1 = {number1}");
         return Math.Sin(number1);
     }
 
@@ -113,6 +125,7 @@ public class CalculatorPlugin
         [Description("The number to take the cosine of")] double number1
     )
     {
+        Console.WriteLine($"Cos function called with parameter: number1 = {number1}");
         return Math.Cos(number1);
     }
 
@@ -121,6 +134,7 @@ public class CalculatorPlugin
         [Description("The number to take the tangent of")] double number1
     )
     {
+        Console.WriteLine($"Tan function called with parameter: number1 = {number1}");
         return Math.Tan(number1);
     }
 
@@ -129,6 +143,7 @@ public class CalculatorPlugin
         [Description("The number to take the arcsine of")] double number1
     )
     {
+        Console.WriteLine($"Asin function called with parameter: number1 = {number1}");
         return Math.Asin(number1);
     }
 
@@ -137,6 +152,7 @@ public class CalculatorPlugin
         [Description("The number to take the arccosine of")] double number1
     )
     {
+        Console.WriteLine($"Acos function called with parameter: number1 = {number1}");
         return Math.Acos(number1);
     }
 
@@ -145,6 +161,7 @@ public class CalculatorPlugin
         [Description("The number to take the arctangent of")] double number1
     )
     {
+        Console.WriteLine($"Atan function called with parameter: number1 = {number1}");
         return Math.Atan(number1);
     }
 }

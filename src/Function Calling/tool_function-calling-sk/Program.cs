@@ -1,9 +1,8 @@
-using System.Reflection;
-using Azure.AI.OpenAI;
-using FunctionCallingWithSemanticKernel.Plugins;
+
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.ChatCompletion;
+using FunctionCallingWithSemanticKernel.Plugins;
 
 var openAiApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
@@ -17,6 +16,7 @@ Console.WriteLine("Now ask me a math question...");
 
 do
 {
+    Console.Write("Your input please: ");
     var prompt = Console.ReadLine();
 
     if (!string.IsNullOrWhiteSpace(prompt))
@@ -28,73 +28,44 @@ do
         }
         else
         {
-            var function = await SelectTool(prompt);
-
-            if (function != null)
-            {
-                kernel.Plugins.TryGetFunctionAndArguments(function, out KernelFunction? pluginFunction,
-                    out KernelArguments? arguments);
-
-                var result = await kernel.InvokeAsync(pluginFunction!, arguments);
-
-                Console.WriteLine($"RESULT: {result.ToString()}");
-            }
-            else
-            {
-                Console.WriteLine("I'm sorry but I am not able to answer your question. I can only answer simple math questions.");
-            }
+            var result = await InvokeKernelFunctionAsync(prompt);
+            Console.WriteLine($"RESULT: {result}");
         }
     }
 } while (true);
 
-
-async Task<OpenAIFunctionToolCall?> SelectTool(string prompt)
+async Task<string> InvokeKernelFunctionAsync(string prompt)
 {
     try
     {
-        /*
-        var openAiClient =  new OpenAIClient(
-                    new Uri("http://localhost:8083/v1"),
-                    new Azure.AzureKeyCredential("empty")
-                );
-        var field = typeof(OpenAIClient).GetField("_isConfiguredForAzureOpenAI", BindingFlags.NonPublic | BindingFlags.Instance);
-        if (field != null)
-        {
-            field.SetValue(openAiClient, false);
-        }
-        */
-        
-        var chatCompletionService = new OpenAIChatCompletionService(
-            modelId: "gpt-4-turbo-preview",
-            //openAIClient: openAiClient);
-            apiKey: openAiApiKey ?? string.Empty);
-        
-        var result = await chatCompletionService.GetChatMessageContentAsync(new ChatHistory(prompt),
+        var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
+
+        var chatHistory = new ChatHistory();
+        chatHistory.AddUserMessage(prompt);
+
+        var result = await chatCompletionService.GetChatMessageContentAsync(chatHistory,
             new OpenAIPromptExecutionSettings()
             {
-                ToolCallBehavior = ToolCallBehavior.EnableKernelFunctions,
+                ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
                 Temperature = 0
             }, kernel);
-        
-        var functionCall = ((OpenAIChatMessageContent)result).GetOpenAIFunctionToolCalls().FirstOrDefault();
 
-        return functionCall;
+        return result.Content ?? "I'm sorry, but I couldn't generate a response.";
     }
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
         Console.WriteLine(ex.StackTrace);
-
-        return null;
+        return "An error occurred while processing your request.";
     }
 }
 
 Kernel GetKernel()
 {
-    var kernelBuilder = Kernel.CreateBuilder();
-	
-    var kernel = kernelBuilder.Build();
-    kernel.Plugins.AddFromType<CalculatorPlugin>();
+    var builder = Kernel.CreateBuilder()
+        .AddOpenAIChatCompletion("gpt-4o", openAiApiKey);
 
-    return kernel;
+    builder.Plugins.AddFromType<CalculatorPlugin>();
+
+    return builder.Build();
 }
